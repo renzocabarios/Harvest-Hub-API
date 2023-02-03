@@ -4,27 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class ProductController extends Controller
+class TransactionController extends Controller
 {
     public function index()
     {
         return response()->json([
-            'data' => Product::with([])->get(),
+            'data' => Transaction::with([])->get(),
             'status' => 'success',
-            'message' => 'Get product success',
+            'message' => 'Get transaction success',
         ]);
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'price' => 'required|numeric'
+            'customer' => 'required|string',
+            'approved' => 'required|string',
+            'confirmed' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -38,10 +38,10 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
 
-            $data = Product::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'price' => $request->price,
+            $data = Transaction::create([
+                'customer' => $request->customer,
+                'approved' => $request->approved,
+                'confirmed' => $request->confirmed,
             ]);
 
 
@@ -52,14 +52,14 @@ class ProductController extends Controller
             return response()->json([
                 'data' => [],
                 'status' => 'failed',
-                'message' => 'Create product failed',
+                'message' => 'Create transaction failed',
             ]);
         }
 
         return response()->json([
             'data' => [$data],
             'status' => 'success',
-            'message' => 'Create product success',
+            'message' => 'Create transaction success',
         ]);
     }
 
@@ -68,9 +68,9 @@ class ProductController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'price' => 'required|numeric'
+            'customer' => 'required|string',
+            'approved' => 'required|string',
+            'confirmed' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -83,19 +83,19 @@ class ProductController extends Controller
 
         try {
             DB::beginTransaction();
-            $data = Product::find($id);
+            $data = Transaction::find($id);
 
             if ($data == null) {
                 return response()->json([
                     'data' => [],
                     'status' => 'failed',
-                    'message' => 'Product not found',
+                    'message' => 'Transaction not found',
                 ]);
             }
 
-            $data->name = $request->get('name');
-            $data->description = $request->get('description');
-            $data->price = $request->get('price');
+            $data->customer = $request->get('customer');
+            $data->approved = $request->get('approved');
+            $data->confirmed = $request->get('confirmed');
 
             $data->save();
             DB::commit();
@@ -113,28 +113,28 @@ class ProductController extends Controller
         return response()->json([
             'data' => [$data],
             'status' => 'success',
-            'message' => 'Update product success',
+            'message' => 'Update transaction success',
         ]);
     }
 
     public function show($id)
     {
         return response()->json([
-            'data' => [Product::with([])->find($id)],
+            'data' => [Transaction::with([])->find($id)],
             'status' => 'success',
-            'message' => 'Get product success',
+            'message' => 'Get transaction success',
         ]);
     }
 
     public function destroy($id)
     {
-        $data = Product::find($id);
+        $data = Transaction::find($id);
 
         if ($data == null) {
             return response()->json([
                 'data' => [],
                 'status' => 'failed',
-                'message' => 'Product not found',
+                'message' => 'Transaction not found',
             ]);
         }
         $data->delete();
@@ -142,7 +142,7 @@ class ProductController extends Controller
         return response()->json([
             'data' => [],
             'status' => 'success',
-            'message' => 'Delete product success',
+            'message' => 'Delete transaction success',
         ]);
     }
 }

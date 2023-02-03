@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TransactionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +20,4 @@ use App\Http\Controllers\UserController;
 
 Route::apiResource('/product', ProductController::class);
 Route::apiResource('/user', UserController::class);
+Route::apiResource('/transaction', TransactionController::class);
