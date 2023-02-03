@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionLineController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CartController;
 
 
 /*
@@ -25,3 +26,4 @@ Route::apiResource('/user', UserController::class);
 Route::apiResource('/transaction', TransactionController::class);
 Route::apiResource('/transaction-line', TransactionLineController::class);
 Route::apiResource('/customer', CustomerController::class);
+Route::apiResource('/cart', CartController::class);
