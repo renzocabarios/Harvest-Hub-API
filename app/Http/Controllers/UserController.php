@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class ProductController extends Controller
+class UserController extends Controller
 {
     public function index()
     {
         return response()->json([
-            'data' => Product::with([])->get(),
+            'data' => User::with([])->get(),
             'status' => 'success',
-            'message' => 'Get product success',
+            'message' => 'Get user success',
         ]);
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'price' => 'required|numeric'
+            'email' => 'required|email',
+            'password' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -36,40 +38,41 @@ class ProductController extends Controller
 
         try {
             DB::beginTransaction();
-
-            $data = Product::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'price' => $request->price,
+            $data = User::create([
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
             ]);
 
+            $data->createToken('MyApp')->accessToken;
 
             DB::commit();
         } catch (\Exception $e) {
 
             DB::rollback();
+
             return response()->json([
                 'data' => [],
                 'status' => 'failed',
-                'message' => 'Create product failed',
+                'message' => $e,
             ]);
         }
 
         return response()->json([
             'data' => [$data],
             'status' => 'success',
-            'message' => 'Create product success',
+            'message' => 'Create user success',
         ]);
     }
 
 
     public function update(Request $request, $id)
     {
-
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'price' => 'required|numeric'
+            'email' => 'required|email',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -82,19 +85,19 @@ class ProductController extends Controller
 
         try {
             DB::beginTransaction();
-            $data = Product::find($id);
+            $data = User::find($id);
 
             if ($data == null) {
                 return response()->json([
                     'data' => [],
                     'status' => 'failed',
-                    'message' => 'Product not found',
+                    'message' => 'User not found',
                 ]);
             }
 
-            $data->name = $request->get('name');
-            $data->description = $request->get('description');
-            $data->price = $request->get('price');
+            $data->email = $request->get('email');
+            $data->first_name = $request->get('first_name');
+            $data->last_name = $request->get('last_name');
 
             $data->save();
             DB::commit();
@@ -112,28 +115,28 @@ class ProductController extends Controller
         return response()->json([
             'data' => [$data],
             'status' => 'success',
-            'message' => 'Update product success',
+            'message' => 'Update user success',
         ]);
     }
 
     public function show($id)
     {
         return response()->json([
-            'data' => [Product::with([])->find($id)],
+            'data' => [User::with([])->find($id)],
             'status' => 'success',
-            'message' => 'Get product success',
+            'message' => 'Get user success',
         ]);
     }
 
     public function destroy($id)
     {
-        $data = Product::find($id);
+        $data = User::find($id);
 
         if ($data == null) {
             return response()->json([
                 'data' => [],
                 'status' => 'failed',
-                'message' => 'Product not found',
+                'message' => 'User not found',
             ]);
         }
         $data->delete();
@@ -141,7 +144,7 @@ class ProductController extends Controller
         return response()->json([
             'data' => [],
             'status' => 'success',
-            'message' => 'Delete product success',
+            'message' => 'Delete user success',
         ]);
     }
 }
