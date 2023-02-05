@@ -9,6 +9,7 @@ use App\Http\Controllers\TransactionLineController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartLineController;
+use App\Http\Controllers\AdminController;
 
 
 /*
@@ -29,3 +30,4 @@ Route::apiResource('/transaction-line', TransactionLineController::class);
 Route::apiResource('/customer', CustomerController::class);
 Route::apiResource('/cart', CartController::class);
 Route::apiResource('/cart-line', CartLineController::class);
+Route::apiResource('/admin', AdminController::class);
