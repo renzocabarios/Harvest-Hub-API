@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartLineController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FarmerController;
 
 
 /*
@@ -31,3 +32,4 @@ Route::apiResource('/customer', CustomerController::class);
 Route::apiResource('/cart', CartController::class);
 Route::apiResource('/cart-line', CartLineController::class);
 Route::apiResource('/admin', AdminController::class);
+Route::apiResource('/farmer', FarmerController::class);
