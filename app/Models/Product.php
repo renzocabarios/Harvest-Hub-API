@@ -12,8 +12,14 @@ class Product extends Model
     public $primarykey = 'id';
 
     protected $fillable = [
+        'farmer_id',
         'name',
         "description",
         "price",
     ];
+
+    public function farmer()
+    {
+        return $this->belongsTo(Farmer::class, "farmer_id");
+    }
 }

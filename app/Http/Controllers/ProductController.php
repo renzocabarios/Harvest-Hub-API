@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => Product::with([])->get(),
+            'data' => Product::with(["farmer"])->get(),
             'status' => 'success',
             'message' => 'Get product success',
         ]);
@@ -22,6 +22,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'farmer_id' => 'required|numeric',
             'name' => 'required|string',
             'description' => 'required|string',
             'price' => 'required|numeric'
@@ -39,6 +40,7 @@ class ProductController extends Controller
             DB::beginTransaction();
 
             $data = Product::create([
+                'farmer_id' => $request->farmer_id,
                 'name' => $request->name,
                 'description' => $request->description,
                 'price' => $request->price,
@@ -50,7 +52,7 @@ class ProductController extends Controller
 
             DB::rollback();
             return response()->json([
-                'data' => [],
+                'data' => [$e],
                 'status' => 'failed',
                 'message' => 'Create product failed',
             ]);
@@ -68,6 +70,7 @@ class ProductController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
+            'farmer_id' => 'required|numeric',
             'name' => 'required|string',
             'description' => 'required|string',
             'price' => 'required|numeric'
@@ -93,6 +96,7 @@ class ProductController extends Controller
                 ]);
             }
 
+            $data->farmer_id = $request->get('farmer_id');
             $data->name = $request->get('name');
             $data->description = $request->get('description');
             $data->price = $request->get('price');
@@ -120,7 +124,7 @@ class ProductController extends Controller
     public function show($id)
     {
         return response()->json([
-            'data' => [Product::with([])->find($id)],
+            'data' => [Product::with(["farmer"])->find($id)],
             'status' => 'success',
             'message' => 'Get product success',
         ]);
