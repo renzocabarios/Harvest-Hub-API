@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\TransactionLine;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,29 +22,22 @@ class TransactionController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'customer' => 'required|string',
-            'approved' => 'required|string',
-            'confirmed' => 'required|string'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'data' => [],
-                'status' => 'failed',
-                'message' => 'The form is not valid',
-            ]);
-        }
 
         try {
             DB::beginTransaction();
 
             $data = Transaction::create([
-                'customer' => $request->customer,
-                'approved' => $request->approved,
-                'confirmed' => $request->confirmed,
+                'customer_id' => $request->customer_id
             ]);
 
+            foreach ($request->products as $product) {
+                TransactionLine::create([
+                    'product_id' => $product["product_id"],
+                    'quantity' => $product["quantity"],
+                    'cost' => $product["cost"],
+                    'transaction_id' => $data->id,
+                ]);
+            }
 
             DB::commit();
         } catch (\Exception $e) {
@@ -52,7 +46,7 @@ class TransactionController extends Controller
             return response()->json([
                 'data' => [],
                 'status' => 'failed',
-                'message' => 'Create transaction failed',
+                'message' => $e,
             ]);
         }
 
