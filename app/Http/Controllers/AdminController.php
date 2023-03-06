@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -118,6 +119,7 @@ class AdminController extends Controller
     public function destroy($id)
     {
         $data = Admin::find($id);
+        $user = User::find($data->user_id);
 
         if ($data == null) {
             return response()->json([
@@ -127,6 +129,7 @@ class AdminController extends Controller
             ]);
         }
         $data->delete();
+        $user->delete();
 
         return response()->json([
             'data' => [],
