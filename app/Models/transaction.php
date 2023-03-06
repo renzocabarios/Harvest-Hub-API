@@ -12,8 +12,23 @@ class Transaction extends Model
     public $primarykey = 'id';
 
     protected $fillable = [
-        'customer',
+        'customer_id',
         "approved",
         "confirmed",
     ];
+
+    protected $attributes = [
+        "approved" => false,
+        "confirmed" => false,
+    ];
+
+    public function transaction_lines()
+    {
+        return $this->hasMany(TransactionLine::class, "transaction_id");
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, "customer_id");
+    }
 }
