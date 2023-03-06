@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Customer;
+use App\Models\Farmer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,6 +28,7 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required|string',
             'first_name' => 'required|string',
+            'type' => 'required|string',
             'last_name' => 'required|string'
         ]);
 
@@ -38,14 +42,35 @@ class UserController extends Controller
 
         try {
             DB::beginTransaction();
+
+
             $data = User::create([
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
+                'type' => $request->type,
             ]);
 
-            $data->createToken('MyApp')->accessToken;
+            if ($request->type == "Admin") {
+                Admin::create([
+                    'user_id' => $data->id,
+                ]);
+            }
+
+
+            if ($request->type == "Farmer") {
+                Farmer::create([
+                    'user_id' => $data->id,
+                ]);
+            }
+
+            if ($request->type == "Customer") {
+                Customer::create([
+                    'user_id' => $data->id,
+                ]);
+            }
+
 
             DB::commit();
         } catch (\Exception $e) {
