@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => Product::with(["farmer"])->get(),
+            'data' => Product::with(["farmer.user"])->get(),
             'status' => 'success',
             'message' => 'Get product success',
         ]);
@@ -124,7 +124,7 @@ class ProductController extends Controller
     public function show($id)
     {
         return response()->json([
-            'data' => [Product::with(["farmer"])->find($id)],
+            'data' => [Product::with(["farmer.user"])->find($id)],
             'status' => 'success',
             'message' => 'Get product success',
         ]);
