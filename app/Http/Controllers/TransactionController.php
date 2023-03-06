@@ -13,7 +13,7 @@ class TransactionController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => Transaction::with([])->get(),
+            'data' => Transaction::with(["transaction_lines.product", "customer.user"])->get(),
             'status' => 'success',
             'message' => 'Get transaction success',
         ]);
@@ -120,7 +120,7 @@ class TransactionController extends Controller
     public function show($id)
     {
         return response()->json([
-            'data' => [Transaction::with([])->find($id)],
+            'data' => [Transaction::with(["transaction_lines.product", "customer.user"])->find($id)],
             'status' => 'success',
             'message' => 'Get transaction success',
         ]);
