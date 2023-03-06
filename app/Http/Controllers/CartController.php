@@ -14,7 +14,7 @@ class CartController extends Controller
     {
 
         return response()->json([
-            'data' => Cart::with(["customer"])->get(),
+            'data' => Cart::with(["customer.user", "cart_lines"])->get(),
             'status' => 'success',
             'message' => 'Get cart success',
         ]);
@@ -109,7 +109,7 @@ class CartController extends Controller
     public function show($id)
     {
         return response()->json([
-            'data' => [Cart::with(["customer"])->find($id)],
+            'data' => [Cart::with(["customer.user", "cart_lines"])->find($id)],
             'status' => 'success',
             'message' => 'Get cart success',
         ]);
