@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Models\Customer;
 use App\Models\Farmer;
+use App\Models\Cart;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -66,8 +67,12 @@ class UserController extends Controller
             }
 
             if ($request->type == "Customer") {
-                Customer::create([
+                $customer = Customer::create([
                     'user_id' => $data->id,
+                ]);
+
+                $customer = Cart::create([
+                    'customer_id' => $customer->id,
                 ]);
             }
 
