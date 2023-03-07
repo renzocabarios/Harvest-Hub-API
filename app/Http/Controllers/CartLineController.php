@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CartLine;
+use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,10 +23,9 @@ class CartLineController extends Controller
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|numeric',
-            'cart_id' => 'required|numeric',
+            'customer_id' => 'required|numeric',
             'quantity' => 'required|numeric'
         ]);
 
@@ -36,12 +36,15 @@ class CartLineController extends Controller
                 'message' => 'The form is not valid',
             ]);
         }
+
+        $customer = Customer::with(["cart"])->find($request->customer_id);
+
         try {
             DB::beginTransaction();
 
             $data = CartLine::create([
                 'product_id' => $request->product_id,
-                'cart_id' => $request->cart_id,
+                'cart_id' => $customer["cart"]["id"],
                 'quantity' => $request->quantity,
             ]);
 
