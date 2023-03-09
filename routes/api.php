@@ -33,3 +33,4 @@ Route::apiResource('/cart', CartController::class);
 Route::apiResource('/cart-line', CartLineController::class);
 Route::apiResource('/admin', AdminController::class);
 Route::apiResource('/farmer', FarmerController::class);
+Route::post('/transaction/checkout', [TransactionController::class, 'checkout']);
