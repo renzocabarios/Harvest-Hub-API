@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\TransactionLine;
-use App\Models\Customer;
+use App\Models\Cart;
 use App\Models\CartLine;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -146,7 +146,7 @@ class TransactionController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'customer_id' => 'required|numeric'
+            'cart_id' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
@@ -160,12 +160,12 @@ class TransactionController extends Controller
         try {
             DB::beginTransaction();
 
-            $customer = Customer::with(["user", "cart.cart_lines.product"])->find($request->customer_id);
-            $cart_lines = $customer["cart"]["cart_lines"];
-            $cart = $customer["cart"];
+            $cart = Cart::with(["customer", "cart_lines.product"])->find($request->cart_id);
+            $customer_id = $cart["customer_id"];
+            $cart_lines = $cart["cart_lines"];
 
             $data = Transaction::create([
-                'customer_id' => $request->customer_id
+                'customer_id' => $customer_id
             ]);
 
             foreach ($cart_lines as $product) {
@@ -177,7 +177,7 @@ class TransactionController extends Controller
                 ]);
             }
 
-            CartLine::where('cart_id', $cart["id"])->delete();
+            CartLine::where('cart_id', $request->cart_id)->delete();
 
             DB::commit();
         } catch (\Exception $e) {
