@@ -197,5 +197,14 @@ class TransactionController extends Controller
         ]);
     }
 
-
+    public function getByCustomer($id)
+    {
+        return response()->json([
+            'data' => Transaction::with(["transaction_lines.product", "customer.user"])->where([
+                ['customer_id', '=', $id],
+            ])->get(),
+            'status' => 'success',
+            'message' => 'Get transactions success',
+        ]);
+    }
 }
