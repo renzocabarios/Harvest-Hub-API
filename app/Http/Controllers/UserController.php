@@ -53,6 +53,8 @@ class UserController extends Controller
                 'type' => $request->type,
             ]);
 
+            $data->createToken('MyApp')->accessToken;
+
             if ($request->type == "Admin") {
                 Admin::create([
                     'user_id' => $data->id,
