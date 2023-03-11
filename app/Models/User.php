@@ -32,10 +32,10 @@ class User extends Authenticatable
 
     public function farmer()
     {
-        return $this->hasOne(Farmer::class, "farmer_id");
+        return $this->hasOne(Farmer::class);
     }
     public function customer()
     {
-        return $this->hasOne(Customer::class, "customer_id");
+        return $this->hasOne(Customer::class);
     }
 }
