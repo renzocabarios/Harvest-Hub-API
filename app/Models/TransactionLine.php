@@ -15,6 +15,8 @@ class TransactionLine extends Model
         'product_id',
         "transaction_id",
         "quantity",
+        "cost",
+
     ];
 
     public function product()
