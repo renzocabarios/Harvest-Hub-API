@@ -28,7 +28,7 @@ class AuthController extends Controller
         $token = auth()->user()->createToken('MyApp')->accessToken;
 
         return response()->json([
-            'data' => [User::with(["farmer", "customer"])->find(auth()->user()["id"])],
+            'data' => [User::with(["farmer", "customer.cart"])->find(auth()->user()["id"])],
             'status' => 'success',
             'message' => 'Authentication success',
             'meta' => [
