@@ -70,7 +70,6 @@ class ProductController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'farmer_id' => 'required|numeric',
             'name' => 'required|string',
             'description' => 'required|string',
             'price' => 'required|numeric'
@@ -96,7 +95,6 @@ class ProductController extends Controller
                 ]);
             }
 
-            $data->farmer_id = $request->get('farmer_id');
             $data->name = $request->get('name');
             $data->description = $request->get('description');
             $data->price = $request->get('price');
