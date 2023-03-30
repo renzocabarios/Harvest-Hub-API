@@ -36,7 +36,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('/cart', CartController::class);
     Route::apiResource('/cart-line', CartLineController::class);
     Route::apiResource('/comment', CommentController::class);
-    Route::apiResource('/admin', AdminController::class);
+    Route::apiResource('/admin', AdminController::class, ['except' => ['store']]);
     Route::apiResource('/farmer', FarmerController::class, ['except' => ['store']]);
     Route::apiResource('/customer', CustomerController::class, ['except' => ['store']]);
     Route::post('/transaction/checkout', [TransactionController::class, 'checkout']);
@@ -46,5 +46,6 @@ Route::middleware(['auth:api'])->group(function () {
 
 Route::post('/farmer', [FarmerController::class, "store"]);
 Route::post('/customer', [CustomerController::class, "store"]);
+Route::post('/admin', [AdminController::class, "store"]);
 Route::post('/user', [UserController::class, "store"]);
 Route::post('/auth', [AuthController::class, "login"]);
