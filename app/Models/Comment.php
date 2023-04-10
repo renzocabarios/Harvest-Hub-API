@@ -23,4 +23,8 @@ class Comment extends Model
         return $this->belongsTo(Transaction::class, "transaction_id");
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, "id");
+    }
 }
