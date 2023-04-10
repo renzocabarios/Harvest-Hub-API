@@ -12,7 +12,7 @@ class CommentController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => Comment::with([])->get(),
+            'data' => Comment::with(["customer.user"])->get(),
             'status' => 'success',
             'message' => 'Get comment success',
         ]);
