@@ -15,7 +15,7 @@ class CartLineController extends Controller
     {
 
         return response()->json([
-            'data' => CartLine::with(["product", "cart"])->get(),
+            'data' => CartLine::with(["product.farmer.user", "cart"])->get(),
             'status' => 'success',
             'message' => 'Get cart line success',
         ]);
