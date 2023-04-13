@@ -13,10 +13,18 @@ use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $data = [];
+
+        if ($request->has('approved')) {
+            $data = Transaction::with(["transaction_lines.product", "customer.user"])->whereIn('approved', [$request->query('approved') === "true"])->get();
+            $request->query('approved');
+        } else {
+            $data = Transaction::with(["transaction_lines.product", "customer.user"])->get();
+        }
         return response()->json([
-            'data' => Transaction::with(["transaction_lines.product", "customer.user"])->get(),
+            'data' => $data,
             'status' => 'success',
             'message' => 'Get transaction success',
         ]);
@@ -63,19 +71,18 @@ class TransactionController extends Controller
     public function update(Request $request, $id)
     {
 
-        $validator = Validator::make($request->all(), [
-            'customer' => 'required|string',
-            'approved' => 'required|string',
-            'confirmed' => 'required|string'
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'approved' => 'required|string',
+        //     'confirmed' => 'required|string'
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'data' => [],
-                'status' => 'failed',
-                'message' => 'The form is not valid',
-            ]);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'data' => [],
+        //         'status' => 'failed',
+        //         'message' => 'The form is not valid',
+        //     ]);
+        // }
 
         try {
             DB::beginTransaction();
@@ -89,9 +96,7 @@ class TransactionController extends Controller
                 ]);
             }
 
-            $data->customer = $request->get('customer');
             $data->approved = $request->get('approved');
-            $data->confirmed = $request->get('confirmed');
 
             $data->save();
             DB::commit();
