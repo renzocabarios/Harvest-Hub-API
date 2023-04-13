@@ -17,9 +17,10 @@ class TransactionController extends Controller
     {
         $data = [];
 
-        if ($request->has('approved')) {
+        if ($request->has('approved') && $request->has('confirmed')) {
+            $data = Transaction::with(["transaction_lines.product", "customer.user"])->whereIn('confirmed', [$request->query('confirmed') === "true"])->whereIn('approved', [$request->query('approved') === "true"])->get();
+        } else if ($request->has('approved')) {
             $data = Transaction::with(["transaction_lines.product", "customer.user"])->whereIn('approved', [$request->query('approved') === "true"])->get();
-            $request->query('approved');
         } else {
             $data = Transaction::with(["transaction_lines.product", "customer.user"])->get();
         }
