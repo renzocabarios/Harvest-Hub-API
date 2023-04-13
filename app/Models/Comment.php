@@ -14,7 +14,10 @@ class Comment extends Model
     protected $fillable = [
         'transaction_id',
         'customer_id',
-        'content',
+        'quality',
+        'accuracy',
+        'delivery',
+        'feedback',
         'rate',
     ];
 

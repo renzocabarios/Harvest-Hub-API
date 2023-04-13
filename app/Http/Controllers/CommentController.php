@@ -24,7 +24,10 @@ class CommentController extends Controller
         $validator = Validator::make($request->all(), [
             'transaction_id' => 'required|numeric',
             'customer_id' => 'required|numeric',
-            'content' => 'required|string',
+            'quality' => 'required|string',
+            'accuracy' => 'required|string',
+            'delivery' => 'required|string',
+            'feedback' => 'required|string',
             'rate' => 'required|numeric'
         ]);
 
@@ -42,7 +45,10 @@ class CommentController extends Controller
             $data = Comment::create([
                 'transaction_id' => $request->transaction_id,
                 'customer_id' => $request->customer_id,
-                'content' => $request->content,
+                'quality' => $request->quality,
+                'accuracy' => $request->accuracy,
+                'delivery' => $request->delivery,
+                'feedback' => $request->feedback,
                 'rate' => $request->rate,
             ]);
 
