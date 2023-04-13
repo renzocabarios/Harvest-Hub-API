@@ -28,6 +28,7 @@ class CommentController extends Controller
             'accuracy' => 'required|string',
             'delivery' => 'required|string',
             'feedback' => 'required|string',
+            'eco' => 'required|numeric',
             'rate' => 'required|numeric'
         ]);
 
@@ -49,6 +50,7 @@ class CommentController extends Controller
                 'accuracy' => $request->accuracy,
                 'delivery' => $request->delivery,
                 'feedback' => $request->feedback,
+                'eco' => $request->eco,
                 'rate' => $request->rate,
             ]);
 

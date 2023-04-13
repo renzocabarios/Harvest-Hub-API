@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('accuracy');
             $table->string('delivery');
             $table->string('feedback');
+            $table->integer('eco');
             $table->integer('rate');
             $table->timestamps();
         });

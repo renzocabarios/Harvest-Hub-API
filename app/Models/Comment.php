@@ -18,6 +18,7 @@ class Comment extends Model
         'accuracy',
         'delivery',
         'feedback',
+        'eco',
         'rate',
     ];
 
