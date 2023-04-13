@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -45,7 +46,10 @@ class CommentController extends Controller
                 'rate' => $request->rate,
             ]);
 
+            $data = Transaction::find($data->id);
+            $data->confirmed = true;
 
+            $data->save();
             DB::commit();
         } catch (\Exception $e) {
 
