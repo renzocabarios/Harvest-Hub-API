@@ -32,8 +32,8 @@ class Transaction extends Model
         return $this->belongsTo(Customer::class, "customer_id");
     }
 
-    public function transaction()
+    public function comment()
     {
-        return $this->hashOne(Comment::class, "transaction_id");
+        return $this->hasOne(Comment::class, "transaction_id");
     }
 }
