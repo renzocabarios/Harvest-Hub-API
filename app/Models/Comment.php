@@ -13,7 +13,6 @@ class Comment extends Model
 
     protected $fillable = [
         'transaction_id',
-        'customer_id',
         'quality',
         'accuracy',
         'delivery',
@@ -27,8 +26,4 @@ class Comment extends Model
         return $this->belongsTo(Transaction::class, "transaction_id");
     }
 
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class, "id");
-    }
 }
