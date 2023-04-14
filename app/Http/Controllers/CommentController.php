@@ -13,7 +13,7 @@ class CommentController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => Comment::with(["customer.user"])->get(),
+            'data' => Comment::with(["transaction.customer.user"])->get(),
             'status' => 'success',
             'message' => 'Get comment success',
         ]);
@@ -23,7 +23,6 @@ class CommentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'transaction_id' => 'required|numeric',
-            'customer_id' => 'required|numeric',
             'quality' => 'required|string',
             'accuracy' => 'required|string',
             'delivery' => 'required|string',
@@ -45,7 +44,6 @@ class CommentController extends Controller
 
             $data = Comment::create([
                 'transaction_id' => $request->transaction_id,
-                'customer_id' => $request->customer_id,
                 'quality' => $request->quality,
                 'accuracy' => $request->accuracy,
                 'delivery' => $request->delivery,
