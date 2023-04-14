@@ -24,4 +24,10 @@ class Customer extends Model
     {
         return $this->hasOne(Cart::class, "id");
     }
+
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, "id");
+    }
 }
