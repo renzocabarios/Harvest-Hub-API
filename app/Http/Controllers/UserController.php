@@ -62,7 +62,7 @@ class UserController extends Controller
             }
 
 
-            if ($request->type == "Farmer") {
+            if ($request->type == "Green Grocer") {
                 Farmer::create([
                     'user_id' => $data->id,
                 ]);
