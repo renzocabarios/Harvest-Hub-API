@@ -16,8 +16,6 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('transaction_id');
             $table->foreign('transaction_id')->references('id')->on('transactions')->cascadeOnDelete();
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers')->cascadeOnDelete();
             $table->string('quality');
             $table->string('accuracy');
             $table->string('delivery');
